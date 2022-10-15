@@ -1,4 +1,4 @@
-package com.dingdong.kopring.controller
+package com.dingdong.kopring.intg
 
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -26,7 +26,7 @@ class HelloControllerIntgTest {
             .expectBody(String::class.java)
             .returnResult()
 
-        Assertions.assertEquals("$name world", result.responseBody)
+        Assertions.assertEquals("$name", result.responseBody)
     }
 
 }

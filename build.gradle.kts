@@ -33,9 +33,11 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-web")
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
 
-    implementation("org.springframework.boot:spring-boot-starter-webflux")
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.springframework.boot:spring-boot-starter-webflux")
+    testImplementation("io.mockk:mockk:1.10.4")
+    testImplementation("com.ninja-squad:springmockk:3.0.1")
 
     //rdb
     runtimeOnly("com.h2database:h2")
@@ -57,3 +59,10 @@ tasks.withType<Test> {
     useJUnitPlatform()
 }
 
+sourceSets {
+    test {
+        java {
+            setSrcDirs(listOf("src/test/com/dingdong/kopring/intg", "src/test/com/dingdong/kopring/unit"))
+        }
+    }
+}
