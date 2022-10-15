@@ -6,15 +6,16 @@ import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/v1/courcses")
+@RequestMapping("/v1/courses")
 class CourseController(
     val courseService: CourseService,
 ) {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    fun addCourse(@RequestBody courseDto: CourseDto): CourseDto{
-        return courseService.addCourse(courseDto)
-    }
+    fun addCourse(@RequestBody courseDto: CourseDto): CourseDto = courseService.addCourse(courseDto)
+
+    @GetMapping
+    fun getCourseList(): List<CourseDto> = courseService.getCourselist()
 
 }
