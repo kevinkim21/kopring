@@ -1,6 +1,7 @@
 package com.dingdong.kopring.intg
 
 import com.dingdong.kopring.dto.CourseDto
+import com.dingdong.kopring.entity.Course
 import com.dingdong.kopring.repository.CourseRepository
 import com.dingdong.kopring.util.courseEntityList
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -56,4 +57,35 @@ internal class CourseControllerIntgTest {
             .responseBody
         assertEquals(courseDtos!!.size, 3)
     }
+
+    @Test
+    fun updateCourse() {
+        val course = Course(null, "test", "test")
+        courseRepository.save(course)
+
+        val updateCourseDto = CourseDto(null, "Hello test","Hello test")
+
+        val result = webTestClient.put()
+            .uri("/v1/courses/{course_id}", course.id)
+            .bodyValue(updateCourseDto)
+            .exchange()
+            .expectStatus().isOk
+            .expectBody(CourseDto::class.java)
+            .returnResult()
+            .responseBody
+
+        assertEquals("Hello test", result!!.name)
+    }
+
+    @Test
+    fun deleteCourse() {
+        val course = Course(null, "test", "test")
+        courseRepository.save(course)
+
+        val result = webTestClient.delete()
+            .uri("/v1/courses/{course_id}", course.id)
+            .exchange()
+            .expectStatus().isNoContent
+    }
+
 }
