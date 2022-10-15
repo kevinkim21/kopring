@@ -20,7 +20,7 @@ class HelloControllerIntgTest {
     fun hello(){
         val name = "dingdong"
         val result = webTestClient.get()
-            .uri("/v1/api/hello/{name}", name)
+            .uri("/hello/{name}", name)
             .exchange()
             .expectStatus().is2xxSuccessful
             .expectBody(String::class.java)

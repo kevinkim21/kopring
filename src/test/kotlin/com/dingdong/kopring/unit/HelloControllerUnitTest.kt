@@ -31,7 +31,7 @@ class HelloControllerUnitTest {
         every {helloServiceMock.hello(any())} returns name
 
         val result = webTestClient.get()
-            .uri("/v1/api/hello/{name}", name)
+            .uri("/hello/{name}", name)
             .exchange()
             .expectStatus().is2xxSuccessful
             .expectBody(String::class.java)
