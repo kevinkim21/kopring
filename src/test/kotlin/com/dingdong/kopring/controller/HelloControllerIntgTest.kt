@@ -1,4 +1,4 @@
-package com.dingdong.kopring.intg
+package com.dingdong.kopring.controller
 
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test

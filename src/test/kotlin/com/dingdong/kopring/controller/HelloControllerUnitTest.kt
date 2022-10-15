@@ -1,6 +1,5 @@
-package com.dingdong.kopring.unit
+package com.dingdong.kopring.controller
 
-import com.dingdong.kopring.controller.HelloController
 import com.dingdong.kopring.service.HelloService
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every
@@ -9,8 +8,6 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
-import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.reactive.server.WebTestClient
 
 

@@ -1,4 +1,4 @@
-package com.dingdong.kopring.intg
+package com.dingdong.kopring.controller
 
 import com.dingdong.kopring.dto.CourseDto
 import com.dingdong.kopring.entity.Course
@@ -13,7 +13,7 @@ import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWeb
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.reactive.server.WebTestClient
-import org.springframework.test.web.reactive.server.expectBodyList
+import org.springframework.web.util.UriComponentsBuilder
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
@@ -50,6 +50,22 @@ internal class CourseControllerIntgTest {
     fun getCourseList(){
         val courseDtos = webTestClient.get()
             .uri("/v1/courses")
+            .exchange()
+            .expectStatus().isOk
+            .expectBodyList(CourseDto::class.java)
+            .returnResult()
+            .responseBody
+        assertEquals(courseDtos!!.size, 3)
+    }
+
+    @Test
+    fun getCourseListByName(){
+        val uri = UriComponentsBuilder.fromUriString("/v1/courses")
+            .queryParam("course_name", "test")
+            .toUriString()
+
+        val courseDtos = webTestClient.get()
+            .uri(uri)
             .exchange()
             .expectStatus().isOk
             .expectBodyList(CourseDto::class.java)

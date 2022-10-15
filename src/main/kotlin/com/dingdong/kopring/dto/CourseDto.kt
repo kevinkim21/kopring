@@ -1,7 +1,12 @@
 package com.dingdong.kopring.dto
 
+import javax.validation.constraints.NotBlank
+
 data class CourseDto(
     val id: Int?,
-    var name: String,
-    var category: String,
+    @get:NotBlank(message = "course.name must not be blank")
+    val name: String,
+
+    @get:NotBlank(message = "course.category must not be blank")
+    val category: String,
 )

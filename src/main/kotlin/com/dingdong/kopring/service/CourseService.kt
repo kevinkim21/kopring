@@ -1,6 +1,5 @@
 package com.dingdong.kopring.service
 
-import com.dingdong.kopring.controller.HelloController
 import com.dingdong.kopring.dto.CourseDto
 import com.dingdong.kopring.entity.Course
 import com.dingdong.kopring.exception.CourseNotFoundException
@@ -13,7 +12,7 @@ import org.springframework.stereotype.Service
 class CourseService(
     val courseRepository: CourseRepository,
 ) {
-    val log: Logger = LoggerFactory.getLogger(HelloController::class.java)
+    val log: Logger = LoggerFactory.getLogger(CourseService::class.java)
 
     fun addCourse(courseDto: CourseDto) : CourseDto{
         val courseEntity = courseDto.let {
@@ -26,8 +25,12 @@ class CourseService(
         }
     }
 
-    fun getCourselist(): List<CourseDto> {
-        return courseRepository.findAll()
+    fun getCourselist(courseName: String): List<CourseDto> {
+        val courses = courseName?.let {
+            courseRepository.findCourseByName(courseName)
+        } ?: courseRepository.findAll()
+
+        return courses
             .map {
                 CourseDto(it.id, it.name, it.category)
             }
