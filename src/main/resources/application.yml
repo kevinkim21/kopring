@@ -14,7 +14,29 @@ spring:
   h2:
     console:
       enable: true
-
+---
+spring:
+  config:
+    activate:
+      on-profile: test-postgresql
+  datasource:
+    platform: postgres
+    url: jdbc:postgresql://localhost:5438/courses
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: postgres
+  jpa:
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    generate-ddl: true
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: true
 ---
 spring:
   config:
