@@ -3,7 +3,9 @@ package com.dingdong.kopring.controller
 import com.dingdong.kopring.dto.CourseDto
 import com.dingdong.kopring.entity.Course
 import com.dingdong.kopring.repository.CourseRepository
+import com.dingdong.kopring.repository.InstructorRepository
 import com.dingdong.kopring.util.courseEntityList
+import com.dingdong.kopring.util.instructorEntity
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
@@ -25,16 +27,22 @@ internal class CourseControllerIntgTest {
     @Autowired
     lateinit var courseRepository: CourseRepository
 
+    @Autowired
+    lateinit var instructorRepository: InstructorRepository
+
     @BeforeEach
     fun setUp() {
         courseRepository.deleteAll()
-        val courses = courseEntityList()
+        val instructor = instructorEntity()
+        instructorRepository.save(instructor)
+        val courses = courseEntityList(instructor)
         courseRepository.saveAll(courses)
     }
 
     @Test
     fun addCourse() {
-        val courseDto = CourseDto(null, "test", "test")
+        val instructor = instructorRepository.findAll().first()
+        val courseDto = CourseDto(null, "test", "test", instructor.id)
         val result = webTestClient.post()
             .uri("/v1/courses", courseDto)
             .bodyValue(courseDto)
@@ -76,10 +84,11 @@ internal class CourseControllerIntgTest {
 
     @Test
     fun updateCourse() {
-        val course = Course(null, "test", "test")
+        val instructor = instructorRepository.findAll().first()
+        val course = Course(null, "test", "test", instructor)
         courseRepository.save(course)
 
-        val updateCourseDto = CourseDto(null, "Hello test","Hello test")
+        val updateCourseDto = CourseDto(null, "Hello test","Hello test", course.instructor!!.id)
 
         val result = webTestClient.put()
             .uri("/v1/courses/{course_id}", course.id)
@@ -95,7 +104,8 @@ internal class CourseControllerIntgTest {
 
     @Test
     fun deleteCourse() {
-        val course = Course(null, "test", "test")
+        val instructor = instructorRepository.findAll().first()
+        val course = Course(null, "test", "test", instructor)
         courseRepository.save(course)
 
         val result = webTestClient.delete()

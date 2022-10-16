@@ -27,7 +27,7 @@ internal class CourseControllerUnitTest {
 
     @Test
     fun addCourse() {
-        val courseDto = CourseDto(null, "test", "test")
+        val courseDto = CourseDto(null, "test", "test",1)
         //addCourse 실행시 mock 객체 return -> courseDto
         every { courseServiceMockk.addCourse(any()) } returns courseDto(id = 1)
 

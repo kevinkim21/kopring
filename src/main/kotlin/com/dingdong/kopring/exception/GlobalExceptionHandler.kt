@@ -34,6 +34,20 @@ class GlobalExceptionHandler: ResponseEntityExceptionHandler() {
             .body(errors.joinToString(", ") {it})
     }
 
+    @ExceptionHandler(InstructorNotValidException::class)
+    fun handleAllExceptions(ex: InstructorNotValidException, request: WebRequest): ResponseEntity<Any> {
+        log.error("Exception observed: ${ex.message}", ex)
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+            .body(ex.message)
+    }
+
+    @ExceptionHandler(CourseNotFoundException::class)
+    fun handleAllExceptions(ex: CourseNotFoundException, request: WebRequest): ResponseEntity<Any> {
+        log.error("Exception observed: ${ex.message}", ex)
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+            .body(ex.message)
+    }
+
     @ExceptionHandler(Exception::class)
     fun handleAllExceptions(ex: Exception, request: WebRequest): ResponseEntity<Any> {
         log.error("Exception observed: ${ex.message}", ex)

@@ -3,6 +3,7 @@ package com.dingdong.kopring.service
 import com.dingdong.kopring.dto.CourseDto
 import com.dingdong.kopring.entity.Course
 import com.dingdong.kopring.exception.CourseNotFoundException
+import com.dingdong.kopring.exception.InstructorNotValidException
 import com.dingdong.kopring.repository.CourseRepository
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -11,17 +12,22 @@ import org.springframework.stereotype.Service
 @Service
 class CourseService(
     val courseRepository: CourseRepository,
+    val instructorService: InstructorService,
 ) {
     val log: Logger = LoggerFactory.getLogger(CourseService::class.java)
 
     fun addCourse(courseDto: CourseDto) : CourseDto{
+        val instructorOptional = instructorService.findByInstructorId(courseDto.instructorId!!)
+        if(!instructorOptional.isPresent) {
+            throw InstructorNotValidException("Instructor not valid: ${courseDto.instructorId!!}")
+        }
         val courseEntity = courseDto.let {
-            Course(null, it.name, it.category)
+            Course(null, it.name, it.category, instructorOptional.get())
         }
         courseRepository.save(courseEntity)
-        log.info("saved: $courseEntity")
+
         return courseEntity.let {
-            CourseDto(it.id, it.name, it.category)
+            CourseDto(it.id, it.name, it.category, it.instructor!!.id)
         }
     }
 
